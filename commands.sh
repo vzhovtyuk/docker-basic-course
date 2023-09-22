@@ -82,3 +82,99 @@ docker pull nginx # pulling image from
 
 
 docker images list
+
+
+################################
+###      RUN MySQL server    ###
+################################
+
+
+#install the client
+sudo apt install mysql-client-8.0
+
+# run mysql in docker
+docker run -d -p 3306:3306 mysql
+
+# container status is Exited
+docker ps -a
+
+# see logs of the container
+docker logs <container_id> --follow
+
+
+# You will see somothing like this:
+#
+#
+# 2023-09-20 10:34:24+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.1.0-1.el8 started.
+# 2023-09-20 10:34:25+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+# 2023-09-20 10:34:25+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.1.0-1.el8 started.
+# 2023-09-20 10:34:25+00:00 [ERROR] [Entrypoint]: Database is uninitialized and password option is not specified
+#     You need to specify one of the following as an environment variable:
+#     - MYSQL_ROOT_PASSWORD
+#     - MYSQL_ALLOW_EMPTY_PASSWORD
+#     - MYSQL_RANDOM_ROOT_PASSWORD
+
+
+# delete already created container
+docker rm <container_id>
+
+## specify password using env variable MYSQL_ROOT_PASSWORD
+docker run \
+  -d \
+  -p 3306:3306 \
+  -e MYSQL_ROOT_PASSWORD=password1234 \
+  -e MYSQL_DATABASE=my_main_db \
+  --name mysqlserver \
+  mysql
+
+# connect to mysql (!!! NO space after '-p' flag)
+# write password in the prompt: password1234
+mysql -u root -h 127.0.0.1 -p 
+
+# perform some actions in the database
+SHOW DATABASES;
+USE my_main_db;
+CREATE TABLE person(id int primary key, name varchar(255));
+SHOW TABLES;
+INSERT INTO person (id, name) VALUES (1, "Jake");
+SELECT * FROM person;
+exit;
+
+
+
+# stop and remove container -> data will be lost (it hass been storing inside the container itself)
+docker stop mysqlserver
+docker rm mysqlserver
+
+
+# now all your data is stored inside ~/local-directory 
+# and you may restart your container any times
+docker run \
+  -d \
+  -p 3306:3306 \
+  -e MYSQL_ROOT_PASSWORD=password1234 \
+  -e MYSQL_DATABASE=my_main_db \
+  -v ~/local-directory:/var/lib/mysql \
+  --name mysqlserver \
+  mysql
+
+
+#0. Agenda
+#
+#1. Dokcer intro
+#
+#2. installation
+#
+#3. image management
+#
+#   - image layered architecture
+#
+## gitlab registry -> advanced
+#
+## image tag, push, inspect ->advanced
+#
+#4. container management
+#
+## image prune -> advanced
+#
+## Docker continuous integration -> research what to put into basic
