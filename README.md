@@ -180,8 +180,7 @@ docker run \
 mysql
 ```
 
-Connect to mysql (!!! NO space after '-p' flag)
-write password in the prompt: password1234
+Connect to mysql write password in the prompt: password1234
 ```
 mysql -u root -h 127.0.0.1 -p
 ```
@@ -205,7 +204,7 @@ docker stop mysqlserver
 docker rm mysqlserver
 ```
 
-Now all your data is stored inside ~/local-directory
+Now all your data is stored inside _~/local-directory_
 and you may restart your container any times, delete it, create new, 
 but with the same config: data will be safe
 ```
@@ -229,47 +228,156 @@ docker rm mysqlserver
 
 # Dockerfile: building your own images
 
-1.) Create a directory for express.js project
+0.) Install git and download a Pet Clinic project from github repository
+
+Installing Git
+```
+sudo apt install git
+```
+
+Then clone the repo
 ```
 cd ~
-mkdir js-project
-cd ./js-project
+git clone https://github.com/spring-projects/spring-petclinic.git
+cd ./spring-petclinic
 ```
 
-Create in directory js-project file 'index.js'
-```
-console.log("Hello, from Docker!:)");
-```
+1.) Create a **Dockerfile**
 
-1.) Dockerfile example
-
-Create a file with name Dockerfile (without extension) inside express-js-project directory 
-
+Create a file with name **Dockerfile** (without extension) inside **spring-petclinic** directory
 ```
 touch Dockerfile
 ```
 
-Put this script inside file Dockerfile
-
+Put this script inside the **Dockerfile** file
 ```
-FROM node:18
+FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
-COPY index.js ./
+ARG JAR_FILE=target/*.jar
 
-ENTRYPOINT ["node", "index.js"]
+COPY ${JAR_FILE} backend.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "backend.jar"]
 ```
 
-Run this command inside js-project directory
+2.) Build a docker image: run this command inside **spring-petclinic** directory
 ```
-docker build . -t js-hello-world-app
+docker build . --tag petclinic
 ```
+This command will build an image from **Dockerfile** file inside this directory and with name **petclinic:latest**
+> **Hint:** --tag (-t) flag gives a specified name to your image. 
+> It is a good practice to use it always when you build an image
 
-Run container
+3.) Run container
 ```
-docker run js-hello-world-app
+docker run --name petclinic -p 9000:8080 --rm petclinic
 ```
+> **Hint:** Use flag ```--rm``` for ```docker run command``` to automatically remove the container after it is stopped
+
+4.) Stop container using Ctrl+C - it will be automatically removed
 
 # Docker-compose
+
+0.) Open docker-compose.yaml file and delete all its content
+
+1.) Put this configuration inside docker-compose.yaml file
+```
+# If only the major version is given (version: '3'), the latest minor version is used by default.
+version: "3.9" 
+
+services:
+  spring-web-server:
+    build: .
+    restart: always
+    ports:
+      - "9000:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default,mysql
+      - MYSQL_URL=jdbc:mysql://mysql/petclinic
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+    depends_on:
+      - mysql
+    deploy:
+      resources:
+        # the platform must prevent the container to allocate more
+        limits:
+          cpus: '4'
+          memory: 512M
+        # the platform ensures that the container can allocate at least the configured amount
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+      - MYSQL_DATABASE=petclinic
+    volumes:
+      - ./dbdata:/var/lib/mysql
+
+
+
+  # username = petclinic
+  # pawword = petclinic
+  # db = petclinic
+  adminer_container:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+
+```
+2.) Execute this command to run all the services together
+```
+docker compose up -d
+```
+3.) Execute this command to see the logs of all the containers.
+-f (--follow) flag is used to follow the logs in runtime
+```
+docker compose logs -f
+```
+> **Hint:** You can specify service names to see the logs of only several of them
+> ```
+> docker compose logs -f mysql adminer_container
+> ```
+> This will show logs only of **mysql** and **adminer_container**
+
+4.) Execute this command to stop all the containers
+```
+docker compose down
+```
+> **Hint:** ```docker compose down``` stops and removes the containers. 
+> 
+> Instead you may run this command: 
+> ```
+> docker compose stop
+> ```
+> and all the containers will be only stopped. So you may run ```docker compose up -d``` again and those containers will restart.
+
+5.) Change deploy resources of **spring-web-server** service to this:
+```
+    ...
+    deploy:
+      resources:
+        # the platform must prevent the container to allocate more
+        limits:
+          cpus: '0.5'
+          ...
+```
+This will lead to slow startup of service: limits work fine
 
