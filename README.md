@@ -278,7 +278,7 @@ docker run --name petclinic -p 9000:8080 --rm petclinic
 ```
 > **Hint:** Use flag ```--rm``` for ```docker run command``` to automatically remove the container after it is stopped
 
-4.) Stop container using Ctrl+C - it will be automatically removed
+4.) Stop container using Ctrl+C, for example, - it will be automatically removed
 
 # Docker-compose
 
@@ -287,10 +287,10 @@ docker run --name petclinic -p 9000:8080 --rm petclinic
 1.) Put this configuration inside docker-compose.yaml file
 ```
 # If only the major version is given (version: '3'), the latest minor version is used by default.
-version: "3.9" 
+version: "3"
 
 services:
-  spring-web-server:
+  petclinic:
     build: .
     restart: always
     ports:
@@ -302,25 +302,16 @@ services:
       - MYSQL_PASSWORD=petclinic
     depends_on:
       - mysql
-    deploy:
-      resources:
-        # the platform must prevent the container to allocate more
-        limits:
-          cpus: '4'
-          memory: 512M
-        # the platform ensures that the container can allocate at least the configured amount
-        reservations:
-          cpus: '0.25'
-          memory: 128M
 
 
   mysql:
+    container_name: database
     image: mysql:8.0
     restart: always
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password # just needed for root user
       - MYSQL_USER=petclinic
       - MYSQL_PASSWORD=petclinic
       - MYSQL_DATABASE=petclinic
@@ -328,9 +319,8 @@ services:
       - ./dbdata:/var/lib/mysql
 
 
-
   # username = petclinic
-  # pawword = petclinic
+  # password = petclinic
   # db = petclinic
   adminer_container:
     image: adminer:latest
@@ -363,21 +353,11 @@ docker compose down
 ```
 > **Hint:** ```docker compose down``` stops and removes the containers. 
 > 
-> Instead you may run this command: 
+> Instead, you may run this command: 
 > ```
 > docker compose stop
 > ```
 > and all the containers will be only stopped. So you may run ```docker compose up -d``` again and those containers will restart.
 
-5.) Change deploy resources of **spring-web-server** service to this:
-```
-    ...
-    deploy:
-      resources:
-        # the platform must prevent the container to allocate more
-        limits:
-          cpus: '0.5'
-          ...
-```
 This will lead to slow startup of service: limits work fine
 
