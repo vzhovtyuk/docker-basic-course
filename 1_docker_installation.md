@@ -1,6 +1,6 @@
 # Docker installation
 1.) Set up Docker's apt repository
-```
+```shell
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
@@ -17,19 +17,19 @@ sudo apt-get update
 ```
 
 2.) Install the Docker packages
-```
+```shell
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
 3.) Create the docker group
-```
+```shell
 sudo groupadd docker
 ```
 
 > **NB:** Group 'docker' may already exist after docker installation, that is ok
 
 4.) Add your user to the docker group
-```
+```shell
 sudo usermod -aG docker $USER
 ```
 
@@ -38,19 +38,19 @@ sudo usermod -aG docker $USER
 
 6.) Check whether docker has been installed and its version
 
-```
+```shell
 docker --version
 ```
 
 7.) Check whether docker deamon is up and running
 
-```
+```shell
 service docker status
 ```
 
 8.) Run hello-world container
 
-```
+```shell
 docker run hello-world
 ```
 
