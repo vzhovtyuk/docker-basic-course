@@ -10,11 +10,19 @@ Without flag -a (--all) shows only running containers, but with it - all of them
 
 2.) This command removes a container or image from docker`s local storage 
 some first symbols of id is enough
-> **NB:** container must be stopped before removing
 
 ```
 docker rm <container_id>
 ```
+> **HINT:** 
+> most commands you will see later in our course operate with both **container/image id** 
+> and **container/image name**.
+
+> **HINT:** 
+> It is possible not to write the whole **id** of container/image: Docker is smart enough
+> to understand which container/image you are needed from several first letters of **id**.
+> So you may write ```docker stop ddc``` instead of ```docker stop ddc84aa5e904```. 
+> Just make sure this id prefix uniquely identifies certain container/image
 
 
 3.) This command shows the list of images
@@ -22,39 +30,49 @@ docker rm <container_id>
 docker images
 ```
 
-4.) Remove the image by id
+4.) Remove the hello-world image by full name or id
 ```
-docker rmi <image_id>
+docker rmi hello-world:latest
 ```
-> **Hint:** when working with images or containers only several first symbols of **Id** are needed to identify the image or container
-
-> **Hint:** when working with images or containers you may use **Id** and **Name** interchangeably.
-> So ```docker rmi <image_name>``` will give the same result
-
 
 5.) Pull the docker image manually. If no tag specified, an image with tag ```:latest``` will be downloaded 
 ```
-docker pull alpine
-docker pull ubuntu:20.04
+docker pull nginx
+docker pull tomcat:8.5.93
 ```
 
 6.) This command runs container and stops just right after start
-because it does not do anything, so process is
-running inside it
+because it does not do anything, so process is running inside it
 ```
-docker run ubuntu
-```
-
-runs docker container in daemon mode == background process
-```
-docker run -d ubuntu sleep 5
+docker run nginx
 ```
 
-starts already created container, which is stopped.
+7.) Runs docker container in daemon mode (background process) and
+forwards ports: it maps port **80 inside** the nginx container to **8081 outside** it.
+Without port forwarding it will be no access to container from localhost.
+Flag ```--name``` gives container a certain name.
+Flag ```--rm``` removes container after it is stopped.
+```
+docker run -d -p 8081:80 --name webserver --rm nginx:1.25.2
+```
+
+Run ```docker ps``` to see the info about the container.
+
+
+8.) Go inside the container and see that is a simple linux OS:
+```
+
+```
+
+8.) No let`s add a volume to our nginx container and serve static files from the folder.
+
+
+
+8.) starts already created container, which is stopped.
 does NOT create a new one!
 ```
+docker stop webserver
 docker start <container_id | container_name>
-docker stop <container_id | container_name>
 ```
 
 # Practice: run MySQL server
@@ -74,7 +92,7 @@ mysql --version
 docker run -d -p 3306:3306 mysql
 ```
 3.) Container status is ```Exited```
-```
+```shell
 docker ps -a
 ```
 
@@ -102,7 +120,7 @@ docker rm <container_id>
 ```
 
 Specify password using env variable MYSQL_ROOT_PASSWORD
-```
+```shell
 docker run \
 -d \
 -p 3306:3306 \
@@ -118,7 +136,7 @@ mysql -u root -h 127.0.0.1 -p
 ```
 
 Perform some actions in the database
-```
+```sql
 SHOW DATABASES;
 USE my_main_db;
 CREATE TABLE person(id int primary key, name varchar(255));
