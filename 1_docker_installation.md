@@ -66,3 +66,8 @@ All that happened was:
 * https://docs.docker.com/engine/install/ubuntu/ - install docker on ubuntu
 * https://docs.docker.com/engine/install/linux-postinstall/ - how to run docker as a non-root user
 
+
+| [Agenda](README.md) | [Main page](README.md) | [2. Common commands](2_common_commands_nginx.md) |
+|---------------------|------------------------|--------------------------------------------------|
+
+

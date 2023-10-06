@@ -53,7 +53,7 @@ docker pull tomcat:8.5.93
 forwards ports: it maps port **80 inside** the nginx container to **8081 outside** it.
 Without port forwarding it will be no access to container from localhost.
 * ```--name``` gives container a certain name
-* ```--rm``` removes container after it is stopped
+* ```--rm``` removes container after it is stopped (useful for demo)
 * ```-d (--detach)``` runs container in detached mode
 * ```-p (--publish)``` maps a port on your host machine to a port on the container
 
@@ -132,3 +132,7 @@ docker stop webserver
 ```shell
 docker start <container_id | container_name>
 ```
+
+| [1. Docker installation](1_docker_installation.md) | [Main page](README.md) | [3. MySQL and environment variables ](3_mysql_environment_variables.md) |
+|----------------------------------------------------|------------------------|-------------------------------------------------------------------------|
+
