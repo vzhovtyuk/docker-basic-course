@@ -1,0 +1,7 @@
+SHOW DATABASES;
+USE my_main_db;
+CREATE TABLE person(id int primary key, name varchar(255));
+SHOW TABLES;
+INSERT INTO person (id, name) VALUES (1, "Jake");
+SELECT * FROM person;
+exit;
