@@ -26,8 +26,6 @@ services:
     container_name: database
     image: mysql:8.0
     restart: always
-    ports:
-      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=password # just needed for root user
       - MYSQL_USER=petclinic
@@ -114,8 +112,6 @@ services:
     container_name: database
     image: mysql:8.0
     restart: always
-    ports:
-      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=password # just needed for root user
       - MYSQL_USER=petclinic

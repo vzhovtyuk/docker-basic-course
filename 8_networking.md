@@ -21,7 +21,7 @@ Network driver in docker is a network type. Available drives:
 * none (completely isolates a container from the host and other containers)
 * third-party network plugins
 
-In our basic course we`ll cover only the bridge docker network driver.
+In our basic course we`ll cover only the bridge docker network driver practically.
 
 2.) Creating a network.
 
