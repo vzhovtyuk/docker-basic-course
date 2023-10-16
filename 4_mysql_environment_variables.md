@@ -100,5 +100,5 @@ docker stop mysqlserver
 docker rm mysqlserver
 ```
 
-| [2. Common commands](2_common_commands_nginx.md) | [Main page](README.md) | [4. Dockerfile ](4_Dockerfile.md) |
+| [2. Common commands](2_common_commands_nginx.md) | [Main page](README.md) | [4. Dockerfile ](5_Dockerfile.md) |
 |--------------------------------------------------|------------------------|-----------------------------------|

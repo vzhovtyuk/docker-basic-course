@@ -14,8 +14,27 @@ cd ~
 git clone https://github.com/spring-projects/spring-petclinic.git
 cd ./spring-petclinic
 ```
+1.) Install sdkman: https://sdkman.io
 
-1.) Create a **Dockerfile**
+```shell
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk version
+```
+
+Install java 17 and Maven 
+```shell
+sdk install java 17.0.7-oracle
+sdk install maven
+```
+
+Try Java and Maven:
+```shell
+java -version
+mvn -version
+```
+
+2.) Create a **Dockerfile**
 
 Create a file with name **Dockerfile** (without extension) inside **spring-petclinic** directory
 ```shell
@@ -38,7 +57,7 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "backend.jar"]
 ```
 
-2.) Build a docker image: run this command inside **spring-petclinic** directory
+3.) Build a docker image: run this command inside **spring-petclinic** directory
 
 ```shell
 docker build . --tag petclinic
@@ -48,7 +67,7 @@ This command will build an image from **Dockerfile** file inside this directory 
 > **Hint:** --tag (-t) flag gives a specified name to your image.
 > It is a good practice to use it always when you build an image
 
-3.) Run container
+4.) Run container
 
 ```shell
 docker run --name petclinic -p 9000:8080 --rm petclinic
@@ -56,8 +75,8 @@ docker run --name petclinic -p 9000:8080 --rm petclinic
 
 > **Hint:** Use flag ```--rm``` for ```docker run command``` to automatically remove the container after it is stopped
 
-4.) Stop container using Ctrl+C, for example, - it will be automatically removed
+5.) Stop container using Ctrl+C, for example, - it will be automatically removed
 
 
-| [3. MySQL and environment variables ](3_mysql_environment_variables.md) | [Main page](README.md) | [5. Docker compose ](5_docker_compose.md) |
+| [3. MySQL and environment variables ](4_mysql_environment_variables.md) | [Main page](README.md) | [5. Docker compose ](7_docker_compose.md) |
 |-------------------------------------------------------------------------|------------------------|-------------------------------------------|

@@ -100,39 +100,7 @@ Stop nginx container using command
 ```shell
 docker stop webserver
 ```
-8.) Now let`s add a volume to our nginx container and serve static files from the folder.
-Folder ```/usr/share/nginx/html``` is predefined to container all the static content that
-should be served by nginx. Let's mount it to some local directory on out host machine:
 
-```shell
-mkdir ~/static_content
-docker run -d -p 8081:80 --name webserver --rm -v ~/static_content:/usr/share/nginx/html:ro nginx:1.25.2
-```
-
-This fragment means that we map ```~/static_content``` folder on our host machine
-to ```/usr/share/nginx/html``` folder inside the container.
-```:ro``` means that this volume is readonly and container cannot change any data there.
-
-```
-... -v ~/static_content:/usr/share/nginx/html:ro ...
-```
-
-Now you can add any files inside ```~/static_content``` folder and they will be served by nginx.
-
-You can put index.html file in html folder of this repo inside ```~/static_content``` folder
-and serve it on http://localhost:8081/index.html
-
-Stop the container:
-```
-docker stop webserver
-```
-9. ) It is also possible to start an already stopped container using command,
-   but i hardly ever use it for sure
-
-```shell
-docker start <container_id | container_name>
-```
-
-| [1. Docker installation](1_docker_installation.md) | [Main page](README.md) | [3. MySQL and environment variables ](3_mysql_environment_variables.md) |
+| [1. Docker installation](1_docker_installation.md) | [Main page](README.md) | [3. MySQL and environment variables ](4_mysql_environment_variables.md) |
 |----------------------------------------------------|------------------------|-------------------------------------------------------------------------|
 
