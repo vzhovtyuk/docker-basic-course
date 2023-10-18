@@ -101,6 +101,6 @@ Stop nginx container using command
 docker stop webserver
 ```
 
-| [1. Docker installation](1_docker_installation.md) | [Main page](README.md) | [3. MySQL and environment variables ](4_mysql_environment_variables.md) |
-|----------------------------------------------------|------------------------|-------------------------------------------------------------------------|
+| [1. Docker installation](1_docker_installation.md) | [Main page](README.md) | [3. MySQL and environment variables ](3_volumes.md) |
+|----------------------------------------------------|------------------------|-----------------------------------------------------|
 

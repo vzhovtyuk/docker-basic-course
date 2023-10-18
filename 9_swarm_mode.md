@@ -125,3 +125,6 @@ Remove service
 ```shell
 docker service rm my-nginx-service
 ```
+
+| [8. Networking](8_networking.md) | [Main page](README.md) | [/dev/null](README.md) |
+|----------------------------------|------------------------|------------------------|

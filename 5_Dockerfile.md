@@ -78,5 +78,5 @@ docker run --name petclinic -p 9000:8080 --rm petclinic
 5.) Stop container using Ctrl+C, for example, - it will be automatically removed
 
 
-| [3. MySQL and environment variables ](4_mysql_environment_variables.md) | [Main page](README.md) | [5. Docker compose ](7_docker_compose.md) |
-|-------------------------------------------------------------------------|------------------------|-------------------------------------------|
+| [4. MySQL, environment variables](4_mysql_environment_variables.md) | [Main page](README.md) | [6. Working with remote repository](6_remote_repository.md) |
+|---------------------------------------------------------------------|------------------------|-------------------------------------------------------------|

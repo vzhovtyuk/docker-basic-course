@@ -84,5 +84,5 @@ docker network rm petclinic-custom-net
 ```
 
 
-| [4. Dockerfile ](5_Dockerfile.md) | [Main page](README.md) | [6. /dev/null ](README.md) |
-|-----------------------------------|------------------------|----------------------------|
+| [7. Docker Compose](7_docker_compose.md) | [Main page](README.md) | [9. Swarm mode](9_swarm_mode.md) |
+|------------------------------------------|------------------------|----------------------------------|

@@ -48,3 +48,7 @@ Stop the container:
 ```
 docker stop webserver
 ```
+
+| [2. Common commands, nginx](2_common_commands_nginx.md) | [Main page](README.md) | [4. MySQL, environment variables](4_mysql_environment_variables.md) |
+|---------------------------------------------------------|------------------------|---------------------------------------------------------------------|
+
