@@ -1,4 +1,4 @@
-# 6. Networking in Docker
+# 8. Networking in Docker
 
 1.) Introduction
 
