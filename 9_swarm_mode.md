@@ -101,7 +101,7 @@ are always running. The rolling update strategy allows you to update a
 service without affecting its availability.
 
 The following command allows you to 
-```shell
+```
 docker service update [OPTIONS] SERVICE
 ```
 
