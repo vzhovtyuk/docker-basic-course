@@ -63,8 +63,7 @@ petclinic:latest
 You see that ```jdbc:mysql://mysql-server/petclinic``` database connection url contains ```mysql-server```
 container name as a host. It will be resolved by DNS to local IP address in ```petclinic-custom-net``` network.
 
-> **Hint:** ```docker compose down``` stops and removes the containers.
-> Docker Compose by default creates a network and runs all the containers inside it. 
+> **Hint:** Docker Compose by default creates a network and runs all the containers inside it. 
 > That is why they can communicate with each other.
 
 4.) Stop containers and remove custom network
