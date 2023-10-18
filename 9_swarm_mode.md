@@ -120,3 +120,8 @@ And increase number of replicas to 5:
 docker service update --replicas 5 my-nginx-service
 docker service ls
 ```
+
+Remove service
+```shell
+docker service rm my-nginx-service
+```
