@@ -13,7 +13,7 @@ and newly-started containers connect to it unless otherwise specified.
 In ```default bridge``` no DNS resolution enabled, so containers cannot see each other(isolated).
 
 Network driver in docker is a network type. Available drives:
-* bridge (the most common)
+* bridge (the most common, enables DNS resolution for containers)
 * host (just runs a container in localhost interface like simple, not very secure)
 * overlay
 * ipvlan
@@ -63,23 +63,79 @@ petclinic:latest
 You see that ```jdbc:mysql://mysql-server/petclinic``` database connection url contains ```mysql-server```
 container name as a host. It will be resolved by DNS to local IP address in ```petclinic-custom-net``` network.
 
+4.) Check visibility
+
+Run nginx server inside ```petclinic-custom-net```
+```shell
+docker run --rm -d --name nginx-in-same-network --net=petclinic-custom-net nginx:1.25
+```
+
+Install ping inside nginx container **(do not do this on prod!)**
+```shell
+docker exec -it nginx-in-same-network bash
+apt update -y
+apt install -y iputils-ping
+```
+
+Ping a petclinic app - it should work
+```shell
+ping petclinic
+```
+
+Go out from container:
+```shell
+exit
+```
+
+Then try to perform this from another network.
+
+Create a new network
+```shell
+docker network create --driver=bridge another-custom-net
+```
+
+And run nginx server inside ```another-custom-net```
+```shell
+docker run --rm -d --name nginx-in-another-network --net=another-custom-net nginx:1.25
+```
+
+And perform just the same:
+
+Install ping inside nginx container **(do not do this on prod!)**
+```shell
+docker exec -it nginx-in-another-network bash
+apt update -y
+apt install -y iputils-ping
+```
+
+Ping a petclinic app - now it will fail due to failure in name resolution
+```shell
+ping petclinic
+```
+Go out from container:
+```shell
+exit
+```
+
+
 > **Hint:** Docker Compose by default creates a network and runs all the containers inside it. 
 > That is why they can communicate with each other.
 
-4.) Stop containers and remove custom network
+5.) Stop containers and remove custom networks
 
 Stop and remove containers:
 ```shell
-docker stop petclinic
-docker stop mysql-server
-
-docker rm petclinic
-docker rm mysql-server
+docker rm -f petclinic
+docker rm -f mysql-server
+docker rm -f nginx-in-same-network
+docker rm -f nginx-in-another-network
 ```
+Flag ```-f``` forces removing the container: it stops if it is running and removes
 
 Remove network:
 ```shell
 docker network rm petclinic-custom-net
+docker network rm another-custom-net
 ```
 
 
