@@ -23,11 +23,11 @@ docker rm <container_id>
 > to understand which container/image you are needed from several first letters of **id**.
 > So you may write
 > ```
-> docker stop ddc
+> docker rm ddc
 > ``` 
 > instead of
 > ```
-> docker stop ddc84aa5e904
+> docker rm ddc84aa5e904
 > ```
 >
 > Just make sure this id prefix uniquely identifies certain container/image
