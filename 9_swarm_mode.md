@@ -51,15 +51,77 @@ docker service rm my-nginx-service
 docker service ls
 ```
 
-3.) Creating services with Docker Compose file
+3.) Scaling services
 
-On the other hand, Docker Compose Files can be used to define multiple 
-services and their dependencies, then deploy the Swarm as a stack. 
+The following command allows you to change the desired state of the service running in the swarm
+```
+docker service scale SERVICE=REPLICAS
+```
+
+Run, to see what exactly you can scale
+```shell
+docker service scale --help
+```
+
+Start nginx:1.25 service in 3 instances:
+```shell
+docker service create --name my-nginx-service --replicas 3 nginx:1.25
+```
+
+And scale up to 5 replicas:
+```shell
+docker service scale my-nginx-service=5
+docker service ls
+```
+
+Remove service
+```shell
+docker service rm my-nginx-service
+```
+
+4.) Service rolling updates
+
+Rolling updates can be used to update a Docker service without causing 
+downtime or service interruption. Docker Swarm updates each replica of 
+the service one at a time to ensure that a certain number of replicas 
+are always running. The rolling update strategy allows you to update a 
+service without affecting its availability.
+
+The following command allows you to 
+```
+docker service update [OPTIONS] SERVICE
+```
+
+Run, to see what exactly you can update
+```shell
+docker service update --help
+```
+
+Start nginx:1.25 service in 3 instances:
+```shell
+docker service create --name my-nginx-service --replicas 3 nginx:1.25
+```
+
+And update service image version to nginx:1.25.1:
+```shell
+docker service update --image nginx:1.25.1 my-nginx-service
+docker service ls
+```
+
+Remove service
+```shell
+docker service rm my-nginx-service
+```
+
+5.) Creating services with Docker Compose file
+
+On the other hand, Docker Compose Files can be used to define multiple
+services and their dependencies, then deploy the Swarm as a stack.
 Let’s see how we can create a service with a Docker Compose file.
 
-First, you need to create a ```docker-compose.yaml``` file, as shown below. 
-Next, note that you need to create a stack to fit your use case. 
-In this example stack, I have defined a web service with 2 replicas, 
+First, you need to create a ```docker-compose.yaml``` file, as shown below.
+Next, note that you need to create a stack to fit your use case.
+In this example stack, I have defined a web service with 2 replicas,
 api service with 2 replicas, and a db service with 1 replica.
 
 ```yaml
@@ -91,40 +153,3 @@ Remove the stack and all its services and their containers
 ```shell
 docker stack rm my-stack
 ```
-
-4.) Service rolling updates
-
-Rolling updates can be used to update a Docker service without causing 
-downtime or service interruption. Docker Swarm updates each replica of 
-the service one at a time to ensure that a certain number of replicas 
-are always running. The rolling update strategy allows you to update a 
-service without affecting its availability.
-
-The following command allows you to 
-```
-docker service update [OPTIONS] SERVICE
-```
-
-Run, to see what exactly you can update
-```shell
-docker service update --help
-```
-
-Start nginx:1.25 service in 3 instances:
-```shell
-docker service create --name my-nginx-service --replicas 3 nginx:1.25
-```
-
-And increase number of replicas to 5:
-```shell
-docker service update --replicas 5 my-nginx-service
-docker service ls
-```
-
-Remove service
-```shell
-docker service rm my-nginx-service
-```
-
-| [8. Networking](8_networking.md) | [Main page](README.md) | [/dev/null](README.md) |
-|----------------------------------|------------------------|------------------------|
