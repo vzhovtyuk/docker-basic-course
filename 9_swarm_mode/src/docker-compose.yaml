@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  web:
+    image: nginx:1.25
+    ports:
+      - "80:80"
+    deploy:
+      replicas: 3
+  api:
+    image: httpd:2.4
+    deploy:
+      replicas: 2
