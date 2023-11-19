@@ -31,7 +31,7 @@ touch Dockerfile
 Put this script inside the **Dockerfile** file
 
 ```dockerfile
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:17-ubi9-minimal
 
 WORKDIR /app
 
@@ -64,3 +64,34 @@ docker run --name petclinic -p 9000:8080 --rm petclinic
 > **Hint:** Use flag ```--rm``` for ```docker run command``` to automatically remove the container after it is stopped
 
 5.) Stop container using Ctrl+C, for example, - it will be automatically removed
+
+
+6.) Multistage build Dockerfile
+
+kubectl - is a util for managing Kubernetes entities. kubectl-kustomize - also.
+
+But just for now don`t mind about it: those are just cli utils which are needed for us inside the image.
+For example, it will be used in runtime inside the container of during build of another image based on this one.
+
+Put this script inside the **Dockerfile_multistage** file
+
+```dockerfile
+FROM bitnami/kubectl:1.27.3 AS kubectl
+
+FROM line/kubectl-kustomize:1.27.3-5.1.0 AS kustomize
+
+FROM docker:20.10.24
+
+COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/
+
+COPY --from=kustomize /usr/local/bin/kustomize /usr/local/bin/
+
+RUN apk update && apk add --no-cache curl bash gettext jq sudo htop yq git sudo
+```
+
+Run the following command to build an image from a new file:
+```shell
+docker build . -f Dockerfile_multistage
+```
+
+> **Important:** Run the following command second time you will see information that soma layers has been taken from the cache and were not built another time

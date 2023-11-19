@@ -15,14 +15,14 @@ services:
       - "9000:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=default,mysql
-      - MYSQL_URL=jdbc:mysql://mysql/petclinic
+      - MYSQL_URL=jdbc:mysql://petclinicdb/petclinic
       - MYSQL_USER=petclinic
       - MYSQL_PASSWORD=petclinic
     depends_on:
       - mysql
 
 
-  mysql:
+  petclinicdb:
     container_name: database
     image: mysql:8.0
     restart: always
@@ -43,11 +43,11 @@ services:
   adminer_container:
     image: adminer:latest
     environment:
-      ADMINER_DEFAULT_SERVER: mysql
+      ADMINER_DEFAULT_SERVER: petclinicdb
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      - petclinicdb
 
 ```
 2.) Execute this command to run all the services together
@@ -102,7 +102,7 @@ services:
       - "9000:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=default,mysql
-      - MYSQL_URL=jdbc:mysql://mysql/petclinic
+      - MYSQL_URL=jdbc:mysql://petclinicdb/petclinic
       - MYSQL_USER=petclinic
       - MYSQL_PASSWORD=petclinic
     depends_on:
@@ -110,7 +110,7 @@ services:
         condition: service_healthy
 
 
-  mysql:
+  petclinicdb:
     container_name: database
     image: mysql:8.0
     restart: always
@@ -137,7 +137,7 @@ services:
   adminer_container:
     image: adminer:latest
     environment:
-      ADMINER_DEFAULT_SERVER: mysql
+      ADMINER_DEFAULT_SERVER: petclinicdb
     ports:
       - "8080:8080"
     depends_on:

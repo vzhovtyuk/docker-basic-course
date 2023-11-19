@@ -8,9 +8,9 @@ services:
       - "9000:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=default,mysql
-      - MYSQL_URL=jdbc:mysql://petclinicdb/petclinic
-      - MYSQL_USER=petclinic
-      - MYSQL_PASS=petclinic
+      - MYSQL_URL=jdbc:mysql://petclinicdb/${db_schema}
+      - MYSQL_USER=${db_user}
+      - MYSQL_PASS=${db_password}
     depends_on:
       petclinicdb:
         condition: service_healthy
@@ -24,13 +24,13 @@ services:
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=password # just needed for root user
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
+      - MYSQL_USER=${db_user}  
+      - MYSQL_PASSWORD=${db_password}
+      - MYSQL_DATABASE=${db_schema}
     volumes:
       - ./dbdata:/var/lib/mysql
     healthcheck:
-      test: mysqladmin ping -h localhost -upetclinic -ppetclinic
+      test: mysqladmin ping -h localhost -u${db_user} -p${db_password}
       interval: 5s
       timeout: 2s
       retries: 5

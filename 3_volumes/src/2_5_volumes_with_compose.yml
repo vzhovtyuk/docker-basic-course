@@ -1,0 +1,7 @@
+services:
+  frontend:
+    image: node:lts
+    volumes:
+      - myapp:/home/node/app
+volumes:
+  myapp:
